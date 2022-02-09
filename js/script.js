@@ -67,21 +67,49 @@ const regActivities = document.getElementById('activities');
 const costActivities = document.getElementById('activities-cost');
 const allTimes = document.querySelectorAll('input[data-day-and-time]');
 const timesArray = Array.from(allTimes);
-
+console.log(timesArray);
 // checkbox listener calculating cost
-// add
+let regArray = [];
+// add array
 regActivities.addEventListener('change', function (e) {
 const dataCost = e.target.getAttribute('data-cost');
 const checkTime = e.target.getAttribute('data-day-and-time');
-//push to an array? then check no two are alike. These should be in 'checked' below
 let numberCost = +dataCost;
 if (event.target.checked === true) {
-  totalCost += numberCost;
-} else {
-  totalCost -= numberCost;
-}
+  regArray.push(checkTime);
+  for (i=0; i<regArray.length; i++) {
+  regArray.pop(checkTime);
+  if (regArray[i] === checkTime) {
+    console.log('error break');
+    console.log(regArray);
+    break;
+  } else {
+    regArray.push(checkTime);
+    console.log('noerror');
+    console.log(regArray);
+  }
+  }
+  };
+
+//   totalCost += numberCost;
+// } else {
+//   regArray.pop(checkTime);
+//   // console.log(regArray);
+//   totalCost -= numberCost;
+// }
 document.getElementById("activities-cost").innerHTML = "Total: $" + totalCost;
 });
+
+//helper function for time check.
+// function helperTimeCheck() {
+// for (i=0; i<regArray.length; i++) {
+// if (regArray[i] === checkTime) {
+//   console.log('works')
+// };
+// };
+// };
+
+
 
 
 // Payment info variables
@@ -90,7 +118,7 @@ const creditcard = document.getElementById('credit-card');
 const paypal = document.getElementById('paypal');
 const bitcoin = document.getElementById('bitcoin');
 const paymentSecondChild = payment.children[1];
-const ccActive = 'true';
+let ccActive = true;
 //payment defaults
 paymentSecondChild.setAttribute('selected', 'true');
 paypal.style.display = 'none';
@@ -102,17 +130,17 @@ payment.addEventListener('change', function (e) {
    paypal.style.display = 'block';
    bitcoin.style.display = 'none';
    creditcard.style.display = 'none';
-   ccActive = 'false';
+   ccActive = false;
  } else if (e.target.value === 'bitcoin') {
    paypal.style.display = 'none';
    bitcoin.style.display = 'block';
    creditcard.style.display = 'none';
-   ccActive = 'false';
+   ccActive = false;
  } else {
    paypal.style.display = 'none';
    bitcoin.style.display = 'none';
    creditcard.style.display = 'block';
-   ccActive = 'true';
+   ccActive = true;
  }
 });
 
@@ -185,6 +213,8 @@ if (nameValid === false) {
 } if (cardValid(cardNumber) === true && ccActive === true) {
   testPass(cardNumber);
   e.preventDefault();
+} if (totalCost === 0) {
+console.log('gothca');
 };
 });
 
