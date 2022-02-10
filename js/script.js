@@ -32,10 +32,10 @@ designSelect.onchange = function() {
 shirtColors.style.display = 'block';
 
 let allShirts = document.querySelectorAll('[data-theme]');
-let myArray = Array.from(allShirts);
+//let myArray = Array.from(allShirts);
 
 //sort shirts into proper arrays
-for (let i of myArray) {
+for (let i of allShirts) {
     let attr = i.getAttribute('data-theme');
     if (attr === 'js puns') {
         punShirts.push(i);
@@ -61,53 +61,40 @@ if (this.value === 'heart js') {
    });
   }
 };
+
+//variables for registration activities
 let totalCost = 0;
-// global variables for activities
 const regActivities = document.getElementById('activities');
 const costActivities = document.getElementById('activities-cost');
-const allTimes = document.querySelectorAll('input[data-day-and-time]');
-const timesArray = Array.from(allTimes);
-console.log(timesArray);
-// checkbox listener calculating cost
-let regArray = [];
-// add array
+const timesArray = document.querySelectorAll('input[data-day-and-time]');
+
 regActivities.addEventListener('change', function (e) {
 const dataCost = e.target.getAttribute('data-cost');
-const checkTime = e.target.getAttribute('data-day-and-time');
-let numberCost = +dataCost;
+const numberCost = +dataCost;
+const currentChecked = event.target.getAttribute('data-day-and-time');
+
 if (event.target.checked === true) {
-  regArray.push(checkTime);
-  for (i=0; i<regArray.length; i++) {
-  regArray.pop(checkTime);
-  if (regArray[i] === checkTime) {
-    console.log('error break');
-    console.log(regArray);
-    break;
-  } else {
-    regArray.push(checkTime);
-    console.log('noerror');
-    console.log(regArray);
+  totalCost += numberCost;
+  for (i=0; i < timesArray.length; i++) {
+    if (event.target !== timesArray[i] && currentChecked === timesArray[i].getAttribute('data-day-and-time')) {
+    const checkDisable = timesArray[i].parentNode;
+    timesArray[i].disabled = true;
+    checkDisable.classList.add('disabled');
+    }
   }
-  }
-  };
-
-//   totalCost += numberCost;
-// } else {
-//   regArray.pop(checkTime);
-//   // console.log(regArray);
-//   totalCost -= numberCost;
-// }
+} else {
+  totalCost -= numberCost;
+  for (i=0; i < timesArray.length; i++) {
+  if (currentChecked === timesArray[i].getAttribute('data-day-and-time')) {
+  const checkDisable = timesArray[i].parentNode;
+  timesArray[i].disabled = false;
+  checkDisable.classList.remove('disabled');
+      }
+   }
+}
 document.getElementById("activities-cost").innerHTML = "Total: $" + totalCost;
-});
 
-//helper function for time check.
-// function helperTimeCheck() {
-// for (i=0; i<regArray.length; i++) {
-// if (regArray[i] === checkTime) {
-//   console.log('works')
-// };
-// };
-// };
+});
 
 
 
