@@ -1,5 +1,4 @@
 
-
 //global variables
 const jobOptionElement = document.querySelector('#title');
 const jobTitle = document.getElementById('other-job-role');
@@ -26,13 +25,11 @@ jobOptionElement.addEventListener('change', e => {
   } else {jobTitle.style.display = 'none';}
 });
 
-
 //reveal shirt colors when a design is picked
 designSelect.onchange = function() {
 shirtColors.style.display = 'block';
 
 let allShirts = document.querySelectorAll('[data-theme]');
-//let myArray = Array.from(allShirts);
 
 //sort shirts into proper arrays
 for (let i of allShirts) {
@@ -44,7 +41,7 @@ for (let i of allShirts) {
     }
   }
 
-//make only correct colors available to pick
+//makes only correct colors available to pick
 if (this.value === 'heart js') {
   heartShirts.forEach((item) => {
       item.style.display = "block";
@@ -73,6 +70,7 @@ const dataCost = e.target.getAttribute('data-cost');
 const numberCost = +dataCost;
 const currentChecked = event.target.getAttribute('data-day-and-time');
 
+//registration function, concurrent class disabling and cost calculation
 if (event.target.checked === true) {
   totalCost += numberCost;
   for (i=0; i < timesArray.length; i++) {
@@ -93,10 +91,7 @@ if (event.target.checked === true) {
    }
 }
 document.getElementById("activities-cost").innerHTML = "Total: $" + totalCost;
-
 });
-
-
 
 
 // Payment info variables
@@ -106,6 +101,7 @@ const paypal = document.getElementById('paypal');
 const bitcoin = document.getElementById('bitcoin');
 const paymentSecondChild = payment.children[1];
 let ccActive = true;
+
 //payment defaults
 paymentSecondChild.setAttribute('selected', 'true');
 paypal.style.display = 'none';
@@ -131,30 +127,64 @@ payment.addEventListener('change', function (e) {
  }
 });
 
-
+//variables for form validation
 const name = document.getElementById('name');
 const email = document.getElementById('email');
 const cardNumber = document.getElementById('cc-num');
 const zip = document.getElementById('zip');
 const cvv = document.getElementById('cvv');
 const form = document.querySelector('form');
+const activities = document.getElementById('activities-hint')
 
-//if false, use argument to put through function filter
-function emailValid (email) {
-const emailValue = email.value;
-const regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-return regex.test(emailValue);
+//function for real-time name evaluation
+function nameValidRT() {
+const nameValue = name.value;
+const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+const nameValid = regex.test(nameValue);
+if (nameValid === false) {
+  testFail(name);
+  e.preventDefault();
+} else {
+  testPass(name);
 }
+};
+
+//name evaluates in real-time
+name.addEventListener('keyup', nameValidRT);
+
+//helpers for function filter
+const testParent = email.parentNode;
+
+function emailValid () {
+  const emailNone = /^\s*$/.test(email.value);
+  const emailValid = /^[^@]+\@[^@.]+\.com$/i.test(email.value);
+  if (emailNone === true) {
+      testParent.lastElementChild.classList.replace('hint', 'hint.style.display=block');
+      testParent.classList.add('not-valid');
+      testParent.classList.remove('valid');
+      testParent.lastElementChild.innerHTML = 'Email should not be blank';
+  } if (emailValid === false) {
+      testParent.lastElementChild.classList.replace('hint', 'hint.style.display=block');
+      testParent.classList.add('not-valid');
+      testParent.classList.remove('valid');
+      testParent.lastElementChild.innerHTML = 'Email requires an @ sign and a .com suffix';
+  } else {
+    testParent.classList.add('valid');
+    testParent.classList.remove('not-valid');
+    testParent.lastElementChild.classList.replace('hint.style.display=block', 'hint');
+  }
+};
 
 function zipValid (zip) {
 const zipValue = zip.value;
-const regex = /^\d{5}$|^\d{5}-\d{4}$/;
+const regex = /^(\d{5})$/;
+// const regex = /^\d{5}$|^\d{5}-\d{4}$/;
 return regex.test(zipValue);
 }
 
 function cvvValid (cvv) {
 const cvvValue = cvv.value;
-const regex = /^[0-9]{3,4}$/;
+const regex = /^(\d{3})$/;
 return regex.test(cvvValue);
 }
 
@@ -165,45 +195,44 @@ const regex = /^[\d]{13,16}$/;
 return regex.test(cardValue);
 }
 
-//check for valid entries once form submitted
-form.addEventListener('submit', function (e) {
+function nameValid(name) {
 const nameValue = name.value;
 const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
-const nameValid = regex.test(nameValue);
-if (nameValid === false) {
+return regex.test(nameValue);
+}
+
+//validation check for inputs
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  emailValid();
+  if (nameValid(name) === false) {
   testFail(name);
   e.preventDefault();
 } if (nameValid === true) {
   testPass(name);
-  e.preventDefault();
-} if (emailValid(email) === false) {
-  testFail(email);
-  e.preventDefault();
-} if (emailValid(email) === true) {
-  testPass(email);
-  e.preventDefault();
 } if (zipValid(zip) === false && ccActive === true) {
   testFail(zip);
   e.preventDefault();
 } if (zipValid(zip) === true && ccActive === true) {
   testPass(zip);
-  e.preventDefault();
 } if (cvvValid(cvv) === false && ccActive === true) {
   testFail(cvv);
   e.preventDefault();
 } if (cvvValid(cvv) === true && ccActive === true) {
   testPass(cvv);
-  e.preventDefault();
 } if (cardValid(cardNumber) === false && ccActive === true) {
   testFail(cardNumber);
   e.preventDefault();
 } if (cardValid(cardNumber) === true && ccActive === true) {
   testPass(cardNumber);
-  e.preventDefault();
 } if (totalCost === 0) {
-console.log('gothca');
+  testFail(activities);
+  e.preventDefault();
+} else {
+  testPass(activities);
 };
 });
+
 
 //var for checkboxes border add on focus
 const checkboxes = document.querySelectorAll('input[type="checkbox"]')
@@ -237,10 +266,3 @@ function testPass (test) {
   testParent.classList.remove('not-valid');
   testParent.lastElementChild.classList.replace('hint.style.display=block', 'hint');
 }
-
-
-//helper function error resolved
-//remove .hint and add .valid from parent and last child
-
-
-//get data-day-and-time from each input element.'span[property]'
