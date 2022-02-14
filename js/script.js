@@ -7,70 +7,55 @@ let punShirts = []
 let heartShirts = []
 const designSelect = document.getElementById('design');
 const color = document.getElementById('color');
-//name field is highlighted onload
 
 
-console.log(color.lastElementChild.value);
 
-//hide job title: other
+//hide job title: other and name field is foucused on load
 window.onload = function() {
   jobTitle.style.display = "none";
-  shirtColors.style.display = 'none';
+  //shirtColors.style.display = 'none';
   document.getElementById("name").focus();
 }
 
-//reveal job title: other when other selected
-jobOptionElement.addEventListener('change', e => {
+designSelect.addEventListener('click', e => {
   if (event.target.value === 'other') {
     jobTitle.style.display = 'block';
   } else {jobTitle.style.display = 'none';}
 });
 
-
-function start(){
-      document.getElementById("design").addEventListener("change", addActivityItem, false);
-      }
-
-function addActivityItem(){
-      //option is selected
-      alert("yeah");
-}
-
-window.addEventListener("load", start, false);
 //reveal shirt colors when a design is picked
-// designSelect.onchange = function() {
-// shirtColors.style.display = 'block';
-// let allShirts = document.querySelectorAll('[data-theme]');
-//
-// //sort shirts into proper arrays
-// for (let i of allShirts) {
-//     let attr = i.getAttribute('data-theme');
-//     if (attr === 'js puns') {
-//         punShirts.push(i);
-//     } else if (attr === 'heart js') {
-//         heartShirts.push(i);
-//     }
-//   }
-//
-// //makes only correct colors available to pick
-// if (this.value === 'js puns') {
-//   color.firstElementChild.style.display = 'none';
-//   console.log(color.firstElementChild.value);
-//   heartShirts.forEach((item) => {
-//   item.style.display = "none";
-//    });
-//   punShirts.forEach((item) => {
-//   item.style.display = "block";
-//    });
-//  } else {
-//    heartShirts.forEach((item) => {
-//    item.style.display = "block";
-//     });
-//   punShirts.forEach((item) => {
-//   item.style.display = "none";
-//    });
-//   }
-// };
+designSelect.onclick ('change', e=> {
+  const allShirts = document.querySelectorAll('[data-theme]');
+  shirtColors.style.display = 'block';
+
+    for (let i of allShirts) {
+    let attr = i.getAttribute('data-theme');
+    if (attr === 'js puns') {
+        punShirts.push(i);
+    } else if (attr === 'heart js') {
+        heartShirts.push(i);
+    }
+
+
+if (e.target.value === 'js puns') {
+  color.children[1].setAttribute('selected', true);
+  heartShirts.forEach((item) => {
+  item.style.display = "none";
+   });
+  punShirts.forEach((item) => {
+  item.style.display = "block";
+   });
+ } else {
+   color.children[4].setAttribute('selected', true);
+   heartShirts.forEach((item) => {
+   item.style.display = "block";
+    });
+  punShirts.forEach((item) => {
+  item.style.display = "none";
+   });
+ }
+}
+});
 
 //variables for registration activities
 let totalCost = 0;
