@@ -6,16 +6,17 @@ const shirtColors = document.getElementById('shirt-colors');
 let punShirts = []
 let heartShirts = []
 const designSelect = document.getElementById('design');
-
+const color = document.getElementById('color');
 //name field is highlighted onload
-window.onload = function() {
-  document.getElementById("name").focus();
-};
+
+
+console.log(color.lastElementChild.value);
 
 //hide job title: other
 window.onload = function() {
   jobTitle.style.display = "none";
   shirtColors.style.display = 'none';
+  document.getElementById("name").focus();
 }
 
 //reveal job title: other when other selected
@@ -25,39 +26,51 @@ jobOptionElement.addEventListener('change', e => {
   } else {jobTitle.style.display = 'none';}
 });
 
+
+function start(){
+      document.getElementById("design").addEventListener("change", addActivityItem, false);
+      }
+
+function addActivityItem(){
+      //option is selected
+      alert("yeah");
+}
+
+window.addEventListener("load", start, false);
 //reveal shirt colors when a design is picked
-designSelect.onchange = function() {
-shirtColors.style.display = 'block';
-
-let allShirts = document.querySelectorAll('[data-theme]');
-
-//sort shirts into proper arrays
-for (let i of allShirts) {
-    let attr = i.getAttribute('data-theme');
-    if (attr === 'js puns') {
-        punShirts.push(i);
-    } else if (attr === 'heart js') {
-        heartShirts.push(i);
-    }
-  }
-
-//makes only correct colors available to pick
-if (this.value === 'heart js') {
-  heartShirts.forEach((item) => {
-      item.style.display = "block";
-   });
-  punShirts.forEach((item) => {
-      item.style.display = "none";
-   });
- } else {
-   heartShirts.forEach((item) => {
-       item.style.display = "none";
-    });
-  punShirts.forEach((item) => {
-      item.style.display = "block";
-   });
-  }
-};
+// designSelect.onchange = function() {
+// shirtColors.style.display = 'block';
+// let allShirts = document.querySelectorAll('[data-theme]');
+//
+// //sort shirts into proper arrays
+// for (let i of allShirts) {
+//     let attr = i.getAttribute('data-theme');
+//     if (attr === 'js puns') {
+//         punShirts.push(i);
+//     } else if (attr === 'heart js') {
+//         heartShirts.push(i);
+//     }
+//   }
+//
+// //makes only correct colors available to pick
+// if (this.value === 'js puns') {
+//   color.firstElementChild.style.display = 'none';
+//   console.log(color.firstElementChild.value);
+//   heartShirts.forEach((item) => {
+//   item.style.display = "none";
+//    });
+//   punShirts.forEach((item) => {
+//   item.style.display = "block";
+//    });
+//  } else {
+//    heartShirts.forEach((item) => {
+//    item.style.display = "block";
+//     });
+//   punShirts.forEach((item) => {
+//   item.style.display = "none";
+//    });
+//   }
+// };
 
 //variables for registration activities
 let totalCost = 0;
@@ -143,7 +156,6 @@ const regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 const nameValid = regex.test(nameValue);
 if (nameValid === false) {
   testFail(name);
-  e.preventDefault();
 } else {
   testPass(name);
 }
@@ -203,7 +215,6 @@ return regex.test(nameValue);
 
 //validation check for inputs
 form.addEventListener('submit', function (e) {
-  e.preventDefault();
   emailValid();
   if (nameValid(name) === false) {
   testFail(name);
@@ -266,3 +277,39 @@ function testPass (test) {
   testParent.classList.remove('not-valid');
   testParent.lastElementChild.classList.replace('hint.style.display=block', 'hint');
 }
+
+
+
+// designSelect.onchange = function() {
+// shirtColors.style.display = 'block';
+// let allShirts = document.querySelectorAll('[data-theme]');
+//
+// //sort shirts into proper arrays
+// for (let i of allShirts) {
+//     let attr = i.getAttribute('data-theme');
+//     if (attr === 'js puns') {
+//         punShirts.push(i);
+//     } else if (attr === 'heart js') {
+//         heartShirts.push(i);
+//     }
+//   }
+//
+// //makes only correct colors available to pick
+// if (this.value === 'js puns') {
+//   color.firstElementChild.style.display = 'none';
+//   console.log(color.firstElementChild.value);
+//   heartShirts.forEach((item) => {
+//   item.style.display = "none";
+//    });
+//   punShirts.forEach((item) => {
+//   item.style.display = "block";
+//    });
+//  } else {
+//    heartShirts.forEach((item) => {
+//    item.style.display = "block";
+//     });
+//   punShirts.forEach((item) => {
+//   item.style.display = "none";
+//    });
+//   }
+// };
