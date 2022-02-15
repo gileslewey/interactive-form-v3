@@ -13,11 +13,11 @@ const color = document.getElementById('color');
 //hide job title: other and name field is foucused on load
 window.onload = function() {
   jobTitle.style.display = "none";
-  //shirtColors.style.display = 'none';
+  shirtColors.style.display = 'none';
   document.getElementById("name").focus();
 }
 
-designSelect.addEventListener('click', e => {
+jobOptionElement.addEventListener('change', e => {
   if (event.target.value === 'other') {
     jobTitle.style.display = 'block';
   } else {jobTitle.style.display = 'none';}
@@ -39,6 +39,7 @@ designSelect.addEventListener ('change', e=> {
 
 if (e.target.value === 'js puns') {
   color.children[1].setAttribute('selected', true);
+  color.children[4].removeAttribute('selected');
   heartShirts.forEach((item) => {
   item.style.display = "none";
    });
@@ -47,6 +48,7 @@ if (e.target.value === 'js puns') {
    });
  } else {
    color.children[4].setAttribute('selected', true);
+   color.children[1].removeAttribute('selected');
    heartShirts.forEach((item) => {
    item.style.display = "block";
     });
@@ -105,7 +107,7 @@ paymentSecondChild.setAttribute('selected', 'true');
 paypal.style.display = 'none';
 bitcoin.style.display = 'none';
 
-// Lisetner for Payment selector
+// Listener for Payment selector
 payment.addEventListener('change', function (e) {
  if (e.target.value === 'paypal') {
    paypal.style.display = 'block';
@@ -132,7 +134,10 @@ const cardNumber = document.getElementById('cc-num');
 const zip = document.getElementById('zip');
 const cvv = document.getElementById('cvv');
 const form = document.querySelector('form');
-const activities = document.getElementById('activities-hint')
+const activities = document.getElementById('activities-hint');
+const monthExpire = document.getElementById('exp-month');
+const yearExpire = document.getElementById('exp-year');
+
 
 //function for real-time name evaluation
 function nameValidRT() {
@@ -149,10 +154,11 @@ if (nameValid === false) {
 //name evaluates in real-time
 name.addEventListener('keyup', nameValidRT);
 
-//helpers for function filter
+//helper for conditional filter
 const testParent = email.parentNode;
 
-function emailValid () {
+//helper functions for validation check
+function emailPass () {
   const emailNone = /^\s*$/.test(email.value);
   const emailValid = /^[^@]+\@[^@.]+\.com$/i.test(email.value);
   if (emailNone === true) {
@@ -160,15 +166,34 @@ function emailValid () {
       testParent.classList.add('not-valid');
       testParent.classList.remove('valid');
       testParent.lastElementChild.innerHTML = 'Email should not be blank';
-  } if (emailValid === false) {
+      return false;
+  } else if (emailValid === false) {
       testParent.lastElementChild.classList.replace('hint', 'hint.style.display=block');
       testParent.classList.add('not-valid');
       testParent.classList.remove('valid');
       testParent.lastElementChild.innerHTML = 'Email requires an @ sign and a .com suffix';
+      return false;
   } else {
     testParent.classList.add('valid');
     testParent.classList.remove('not-valid');
     testParent.lastElementChild.classList.replace('hint.style.display=block', 'hint');
+  }
+};
+
+
+function monthValid() {
+if (monthExpire.value === 'Select Date') {
+return false;
+} else {
+testPass(monthExpire);
+  }
+};
+
+function yearValid() {
+if (yearExpire.value === 'Select Year') {
+return false;
+} else {
+testPass(yearExpire);
   }
 };
 
@@ -200,12 +225,23 @@ return regex.test(nameValue);
 
 //validation check for inputs
 form.addEventListener('submit', function (e) {
-  emailValid();
+  monthValid();
+  yearValid();
+  emailPass();
+  if (emailPass() === false) {
+    e.preventDefault();
+  }
   if (nameValid(name) === false) {
   testFail(name);
   e.preventDefault();
 } if (nameValid === true) {
   testPass(name);
+} if (monthValid() === false && ccActive === true) {
+  testFail(monthExpire);
+  e.preventDefault();
+} if (yearValid() === false && ccActive === true) {
+  testFail(yearExpire);
+  e.preventDefault();
 } if (zipValid(zip) === false && ccActive === true) {
   testFail(zip);
   e.preventDefault();
@@ -262,39 +298,3 @@ function testPass (test) {
   testParent.classList.remove('not-valid');
   testParent.lastElementChild.classList.replace('hint.style.display=block', 'hint');
 }
-
-
-
-// designSelect.onchange = function() {
-// shirtColors.style.display = 'block';
-// let allShirts = document.querySelectorAll('[data-theme]');
-//
-// //sort shirts into proper arrays
-// for (let i of allShirts) {
-//     let attr = i.getAttribute('data-theme');
-//     if (attr === 'js puns') {
-//         punShirts.push(i);
-//     } else if (attr === 'heart js') {
-//         heartShirts.push(i);
-//     }
-//   }
-//
-// //makes only correct colors available to pick
-// if (this.value === 'js puns') {
-//   color.firstElementChild.style.display = 'none';
-//   console.log(color.firstElementChild.value);
-//   heartShirts.forEach((item) => {
-//   item.style.display = "none";
-//    });
-//   punShirts.forEach((item) => {
-//   item.style.display = "block";
-//    });
-//  } else {
-//    heartShirts.forEach((item) => {
-//    item.style.display = "block";
-//     });
-//   punShirts.forEach((item) => {
-//   item.style.display = "none";
-//    });
-//   }
-// };
