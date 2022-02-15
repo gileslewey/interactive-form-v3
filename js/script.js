@@ -2,7 +2,7 @@
 //global variables
 const jobOptionElement = document.querySelector('#title');
 const jobTitle = document.getElementById('other-job-role');
-const shirtColors = document.getElementById('shirt-colors');
+const shirtColors = document.getElementById('color');
 let punShirts = []
 let heartShirts = []
 const designSelect = document.getElementById('design');
@@ -13,7 +13,7 @@ const color = document.getElementById('color');
 //hide job title: other and name field is foucused on load
 window.onload = function() {
   jobTitle.style.display = "none";
-  shirtColors.style.display = 'none';
+  shirtColors.disabled = true;
   document.getElementById("name").focus();
 }
 
@@ -26,7 +26,7 @@ jobOptionElement.addEventListener('change', e => {
 //reveal shirt colors when a design is picked
 designSelect.addEventListener ('change', e=> {
   const allShirts = document.querySelectorAll('[data-theme]');
-  shirtColors.style.display = 'block';
+  shirtColors.disabled = false;
 
     for (let i of allShirts) {
     let attr = i.getAttribute('data-theme');
