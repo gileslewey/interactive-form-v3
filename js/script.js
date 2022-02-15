@@ -230,40 +230,39 @@ form.addEventListener('submit', function (e) {
   emailPass();
   if (emailPass() === false) {
     e.preventDefault();
-  }
-  if (nameValid(name) === false) {
+  } if (nameValid(name) === false) {
   testFail(name);
   e.preventDefault();
-} if (nameValid === true) {
-  testPass(name);
-} if (monthValid() === false && ccActive === true) {
-  testFail(monthExpire);
-  e.preventDefault();
-} if (yearValid() === false && ccActive === true) {
-  testFail(yearExpire);
-  e.preventDefault();
-} if (zipValid(zip) === false && ccActive === true) {
-  testFail(zip);
-  e.preventDefault();
-} if (zipValid(zip) === true && ccActive === true) {
-  testPass(zip);
-} if (cvvValid(cvv) === false && ccActive === true) {
-  testFail(cvv);
-  e.preventDefault();
-} if (cvvValid(cvv) === true && ccActive === true) {
-  testPass(cvv);
-} if (cardValid(cardNumber) === false && ccActive === true) {
-  testFail(cardNumber);
-  e.preventDefault();
-} if (cardValid(cardNumber) === true && ccActive === true) {
-  testPass(cardNumber);
-} if (totalCost === 0) {
-  testFail(activities);
-  e.preventDefault();
-} else {
-  testPass(activities);
-};
-});
+  } if (nameValid === true) {
+    testPass(name);
+  } if (monthValid() === false && ccActive === true) {
+    testFail(monthExpire);
+    e.preventDefault();
+  } if (yearValid() === false && ccActive === true) {
+    testFail(yearExpire);
+    e.preventDefault();
+  } if (zipValid(zip) === false && ccActive === true) {
+    testFail(zip);
+    e.preventDefault();
+  } if (zipValid(zip) === true && ccActive === true) {
+    testPass(zip);
+  } if (cvvValid(cvv) === false && ccActive === true) {
+    testFail(cvv);
+    e.preventDefault();
+  } if (cvvValid(cvv) === true && ccActive === true) {
+    testPass(cvv);
+  } if (cardValid(cardNumber) === false && ccActive === true) {
+    testFail(cardNumber);
+    e.preventDefault();
+  } if (cardValid(cardNumber) === true && ccActive === true) {
+    testPass(cardNumber);
+  } if (totalCost === 0) {
+    testFail(activities);
+    e.preventDefault();
+  } else {
+    testPass(activities);
+  };
+  });
 
 
 //var for checkboxes border add on focus
