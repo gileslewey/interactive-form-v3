@@ -24,7 +24,7 @@ designSelect.addEventListener('click', e => {
 });
 
 //reveal shirt colors when a design is picked
-designSelect.onclick ('change', e=> {
+designSelect.addEventListener ('change', e=> {
   const allShirts = document.querySelectorAll('[data-theme]');
   shirtColors.style.display = 'block';
 
